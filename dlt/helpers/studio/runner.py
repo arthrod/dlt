@@ -1,6 +1,7 @@
 import subprocess
 
 from dlt.common.exceptions import MissingDependencyException
+from security import safe_command
 
 # keep this, will raise if user tries to run studio without dependencies
 try:
@@ -26,4 +27,4 @@ def run_studio(pipeline_name: str = None, edit: bool = False) -> None:
         studio_cmd.append("--pipeline")
         studio_cmd.append(pipeline_name)
 
-    subprocess.run(studio_cmd)
+    safe_command.run(subprocess.run, studio_cmd)

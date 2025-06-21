@@ -9,6 +9,7 @@ from typing import Any, ClassVar, Generator, Iterator, List, Type, ContextManage
 
 from dlt.common import known_env
 from dlt.common.exceptions import CannotInstallDependencies, VenvNotFound
+from security import safe_command
 
 
 class DLTEnvBuilder(venv.EnvBuilder):
@@ -93,7 +94,7 @@ class Venv:
     ) -> "subprocess.Popen[str]":
         command = os.path.join(self.context.bin_path, entry_point)
         cmd = [command, *script_args]
-        return subprocess.Popen(cmd, **popen_kwargs)
+        return safe_command.run(subprocess.Popen, cmd, **popen_kwargs)
 
     def run_command(self, entry_point: str, *script_args: Any) -> str:
         """Runs any `command` with specified `script_args`. Current `os.environ` and cwd is passed to executed process"""
