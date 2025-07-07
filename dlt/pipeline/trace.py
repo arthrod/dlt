@@ -31,6 +31,7 @@ from dlt.common.utils import uniq_id, get_exception_trace_chain
 
 from dlt.pipeline.typing import TPipelineStep
 from dlt.pipeline.exceptions import PipelineStepFailed
+import fickling
 
 
 TRACE_ENGINE_VERSION = 1
@@ -340,7 +341,7 @@ def save_trace(trace_path: str, trace: PipelineTrace) -> None:
 def load_trace(trace_path: str) -> PipelineTrace:
     try:
         with open(os.path.join(trace_path, TRACE_FILE_NAME), mode="rb") as f:
-            return pickle.load(f)  # type: ignore
+            return fickling.load(f)  # type: ignore
     except (AttributeError, FileNotFoundError):
         # on incompatible pickling / file not found return no trace
         return None
