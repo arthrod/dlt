@@ -59,7 +59,7 @@ def _send_trace_to_platform(trace: PipelineTrace, pipeline: SupportsPipeline) ->
         try:
             trace_dump = json.dumps(trace.asdict())
             url = pipeline.runtime_config.dlthub_dsn + TRACE_URL_SUFFIX
-            response = requests.put(url, data=trace_dump)
+            response = requests.put(url, data=trace_dump, timeout=60)
             if response.status_code != 200:
                 logger.debug(
                     f"Failed to send trace to platform, response code: {response.status_code}"
@@ -104,7 +104,7 @@ def _sync_schemas_to_platform(trace: PipelineTrace, pipeline: SupportsPipeline) 
     def _future_send() -> None:
         try:
             url = pipeline.runtime_config.dlthub_dsn + STATE_URL_SUFFIX
-            response = requests.put(url, data=json.dumps(payload))
+            response = requests.put(url, data=json.dumps(payload), timeout=60)
             if response.status_code != 200:
                 logger.debug(
                     f"Failed to send state to platform, response code: {response.status_code}"
