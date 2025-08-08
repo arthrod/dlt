@@ -5,7 +5,6 @@ It can be used to operate on a single file atomically both locally and on
 cloud storage. The lock can be used to operate on entire directories by
 creating a lock file that resolves to an agreed upon path across processes.
 """
-import random
 import string
 import time
 import typing as t
@@ -17,6 +16,7 @@ import fsspec
 
 from dlt.common.pendulum import pendulum, timedelta
 from dlt.common.storages.fsspec_filesystem import MTIME_DISPATCH
+import secrets
 
 
 def lock_id(k: int = 4) -> str:
@@ -28,7 +28,7 @@ def lock_id(k: int = 4) -> str:
     Returns:
         A time sortable uuid.
     """
-    suffix = "".join(random.choices(string.ascii_lowercase, k=k))
+    suffix = "".join(secrets.SystemRandom().choices(string.ascii_lowercase, k=k))
     return f"{time.time_ns()}{suffix}"
 
 
@@ -172,7 +172,7 @@ class TransactionalFile:
             return True
 
         if jitter_mean > 0:
-            time.sleep(random.random() * jitter_mean)  # Add jitter to avoid thundering herd
+            time.sleep(secrets.SystemRandom().random() * jitter_mean)  # Add jitter to avoid thundering herd
         self.lock_path = f"{self.lock_prefix}.{lock_id()}"
         self._fs.touch(self.lock_path)
         locks = self._sync_locks()
@@ -184,7 +184,7 @@ class TransactionalFile:
                 self._fs.rm(self.lock_path)
                 return False
 
-            time.sleep(random.random() + TransactionalFile.POLLING_INTERVAL)
+            time.sleep(secrets.SystemRandom().random() + TransactionalFile.POLLING_INTERVAL)
             locks = self._sync_locks()
             if self.lock_path not in locks:
                 self._fs.touch(self.lock_path)
