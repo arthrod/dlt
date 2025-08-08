@@ -1,4 +1,3 @@
-import random
 from contextlib import contextmanager
 from copy import copy
 from types import TracebackType
@@ -42,6 +41,7 @@ from dlt.destinations.exceptions import (
 )
 from dlt.destinations.impl.dummy.configuration import DummyClientConfiguration
 from dlt.destinations.job_impl import ReferenceFollowupJobRequest
+import secrets
 
 
 class LoadDummyBaseJob(RunnableLoadJob):
@@ -58,7 +58,7 @@ class LoadDummyBaseJob(RunnableLoadJob):
     def run(self) -> None:
         while True:
             # simulate generic exception (equals retry)
-            c_r = random.random()
+            c_r = secrets.SystemRandom().random()
             if self.config.exception_prob >= c_r:
                 # this will make the job go to a retry state with a generic exception
                 raise Exception("Dummy job status raised exception")
@@ -70,19 +70,19 @@ class LoadDummyBaseJob(RunnableLoadJob):
                 raise DestinationTerminalException("failed due to timeout")
 
             # success
-            c_r = random.random()
+            c_r = secrets.SystemRandom().random()
             if self.config.completed_prob >= c_r:
                 # this will make the run function exit and the job go to a completed state
                 break
 
             # retry prob
-            c_r = random.random()
+            c_r = secrets.SystemRandom().random()
             if self.config.retry_prob >= c_r:
                 # this will make the job go to a retry state
                 raise DestinationTransientException("a random retry occurred")
 
             # fail prob
-            c_r = random.random()
+            c_r = secrets.SystemRandom().random()
             if self.config.fail_prob >= c_r:
                 # this will make the the job go to a failed state
                 raise DestinationTerminalException("a random fail occurred")
