@@ -33,7 +33,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-twitter-embed": "^4.0.4",
-    "semver": "^7.6.3",
+    "semver": "^7.7.3",
     "string-dedent": "^3.0.1",
     "sync-fetch": "^0.5.2",
     "toml": "^3.0.0"
