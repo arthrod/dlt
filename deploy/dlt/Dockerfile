@@ -1,4 +1,4 @@
-FROM python:3.11.11-alpine
+FROM python:3.14.2-alpine
 
 # Metadata
 LABEL org.label-schema.vendor="dltHub" \
