@@ -195,7 +195,7 @@ dev = [
     "sqlalchemy<2",
     "requests-mock>=1.10.0,<2",
     "types-click>=7.1.8,<8",
-    "sqlfluff>=2.3.2,<3",
+    "sqlfluff>=2.3.2,<5",
     "types-deprecated>=1.2.9.2,<2",
     "pytest-console-scripts>=1.4.1,<2",
     "pytest>=7.0.0,<8",
